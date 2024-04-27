@@ -1,17 +1,20 @@
 from PIL import Image
 import os
 
+IMAGE_WIDTH = 1000 #If the image is wider than it is tall, it will be set to this width.
+IMAGE_HEIGHT = 600 #If the image is taller than it is wide, it will be set to this height.
+
 
 def compress_image(image_path, output_path, quality_threshold):
     # Open the image
     with Image.open(image_path) as img:
         # Check if image is wider than tall
-        if img.width > img.height:
+        if img.width >= img.height:
             # Resize to width 1000px
-            img = img.resize((1000, int(img.height * (1000 / img.width))))
+            img = img.resize((IMAGE_WIDTH, int(img.height * (IMAGE_WIDTH / img.width))))
         else:
             # Resize to height 600px
-            img = img.resize((int(img.width * (600 / img.height)), 600))
+            img = img.resize((int(img.width * (IMAGE_HEIGHT / img.height)), IMAGE_HEIGHT))
 
         # Get the original image size
         original_size = os.path.getsize(image_path)
